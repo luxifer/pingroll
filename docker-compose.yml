@@ -6,6 +6,8 @@ services:
       - "1323:1323"
     links:
       - rethink
+    environment:
+      PINGROLL_RETHINK_URL: "rethink:28015"
   rethink:
     image: rethinkdb:2.3
     volumes:
