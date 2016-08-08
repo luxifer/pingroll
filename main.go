@@ -6,22 +6,26 @@ import (
 	log "github.com/Sirupsen/logrus"
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/engine/standard"
+	"github.com/labstack/echo/middleware"
 	r "gopkg.in/dancannon/gorethink.v2"
 )
 
 var (
-	rc *r.Session
-	tc *TwilioClient
+	rc     *r.Session
+	tc     *TwilioClient
+	apiKey string
 )
 
 func main() {
 	router := echo.New()
-	router.GET("/api/users", UserListHandler)
-	router.PUT("/api/users", AddUserHandler)
-	router.DELETE("/api/users/:id", RemoveUserHandler)
-	router.GET("/api/webhooks", WebhookListHandler)
-	router.PUT("/api/webhooks", AddWebhookHandler)
-	router.DELETE("/api/webhooks/:id", RemoveWebhookHandler)
+	api := router.Group("/api")
+	api.Use(middleware.BasicAuth(AuthMiddleware))
+	api.GET("/users", UserListHandler)
+	api.PUT("/users", AddUserHandler)
+	api.DELETE("/users/:id", RemoveUserHandler)
+	api.GET("/webhooks", WebhookListHandler)
+	api.PUT("/webhooks", AddWebhookHandler)
+	api.DELETE("/webhooks/:id", RemoveWebhookHandler)
 	router.POST("/webhook/:name", WebhookHandler)
 
 	port := os.Getenv("PORT")
@@ -58,6 +62,12 @@ func main() {
 
 	if twilioFromNumber == "" {
 		log.Fatal("PINGROLL_TWILIO_FROM_NUMBER is required")
+	}
+
+	apiKey = os.Getenv("PINGROLL_API_KEY")
+
+	if apiKey == "" {
+		log.Fatal("PINGROLL_API_KEY is required")
 	}
 
 	var err error

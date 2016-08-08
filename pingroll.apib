@@ -4,6 +4,26 @@ FORMAT: 1A
 
 Pingroll is an API that allows to register users, and webhook templates that can be triggered through the webhook handler.
 
+# Authentication [/api/*]
+
+This API uses Basic auth to protect resources. The `username` is the API key. No password needed.
+
+## Request [GET]
+
++ Response 401
+
+    + Headers
+
+            Www-Authenticate: Basic realm=Restricted
+
++ Request
+
+    + Headers
+
+            Authorization: Basic ZWZiOTQzODZiODRjYzU2YzUwNGY0ZTkzNWQ1MDRlN2QwNmQ0YjMyMDo=
+
++ Response 200
+
 # Group Users
 
 ## User Collection [/api/users]
