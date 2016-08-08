@@ -1,0 +1,12 @@
+version: '2'
+services:
+  pingroll:
+    build: .
+    ports:
+      - "1323:1323"
+    links:
+      - rethink
+  rethink:
+    image: rethinkdb:2.3
+    volumes:
+      - /data
