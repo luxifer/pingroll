@@ -120,9 +120,22 @@ func WebhookHandler(c echo.Context) error {
 	t := template.Must(template.New(name).Parse(w.Template))
 	var data map[string]interface{}
 
-	if err := c.Bind(&data); err != nil {
-		log.Warn(err)
-		return echo.NewHTTPError(http.StatusBadRequest)
+	ct := c.Request().Header().Get(echo.HeaderContentType)
+
+	switch ct {
+	case echo.MIMEApplicationForm, echo.MIMEMultipartForm:
+		for key, value := range c.FormParams() {
+			if len(value) == 1 {
+				data[key] = value[0]
+			} else {
+				data[key] = value
+			}
+		}
+	default:
+		if err := c.Bind(&data); err != nil {
+			log.Warn(err)
+			return echo.NewHTTPError(http.StatusBadRequest)
+		}
 	}
 
 	var b bytes.Buffer
