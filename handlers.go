@@ -124,6 +124,7 @@ func WebhookHandler(c echo.Context) error {
 
 	switch ct {
 	case echo.MIMEApplicationForm, echo.MIMEMultipartForm:
+		data = make(map[string]interface{})
 		for key, value := range c.FormParams() {
 			if len(value) == 1 {
 				data[key] = value[0]
