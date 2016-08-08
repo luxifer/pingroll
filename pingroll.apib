@@ -1,0 +1,155 @@
+FORMAT: 1A
+
+# Pingroll
+
+Pingroll is an API that allows to register users, and webhook templates that can be triggered through the webhook handler.
+
+# Group Users
+
+## User Collection [/api/users]
+
+### List All Users [GET]
+
++ Response 200 (application/json)
+
+        {
+            "data": [
+                {
+                    "ID": "d40ef03b-cf65-4f5b-b054-3669359abbc9",
+                    "Name": "foo",
+                    "Number": "+33612345789",
+                    "Always": true
+                }
+            ]
+        }
+
+### Create a New User [PUT]
+
+You can register your own user using this action. It takes a JSON object containing a name and a phone number. You may also add an "always" attribute to specify if the user should always receive notification, even if he's not on duty.
+
++ Attributes (User)
+
++ Request (application/json)
+
+        {
+            "Name": "bar",
+            "Number": "+33712345689",
+            "Always": false
+        }
+
++ Response 201 (application/json)
+
+    + Body
+
+            {
+                "ID": "78a53aa2-f214-4c6a-9478-bfa8501de691",
+                "Name": "bar",
+                "Number": "+33712345689",
+                "Always": false
+            }
+
+## User [/api/users/{user_id}]
+
+A User object has the following attributes.
+
+- ID
+- Name
+- Number
+- Always
+
++ Parameters
+    + user_id: "78a53aa2-f214-4c6a-9478-bfa8501de691" (required, string) - ID of the User
+
+### View a User detail [GET]
+
++ Response 200 (application/json)
+
+        {
+            "ID": "d40ef03b-cf65-4f5b-b054-3669359abbc9",
+            "Name": "foo",
+            "Number": "+33612345789",
+            "Always": true
+        }
+
+### Delete [DELETE]
+
++ Response 204
+
+# Group Webhooks
+
+## Webhook Collection [/api/webhooks]
+
+### List All Webhooks [GET]
+
++ Response 200 (application/json)
+
+        {
+            "data": [
+                {
+                    "ID": "d40ef03b-cf65-4f5b-b054-3669359abbc9",
+                    "Name": "foo",
+                    "Template": "{{.foo}}"
+                }
+            ]
+        }
+
+### Create a New Webhook [PUT]
+
+You can register your own webhook using this action. It takes a JSON object containing a name and a template.
+
++ Attributes (Webhook)
+
++ Request (application/json)
+
+        {
+            "Name": "bar",
+            "Template": "{{.bar}}"
+        }
+
++ Response 201 (application/json)
+
+    + Body
+
+            {
+                "ID": "78a53aa2-f214-4c6a-9478-bfa8501de691",
+                "Name": "bar",
+                "Template": "{{.bar}}"
+            }
+
+## Webhook [/api/webhooks/{webhook_id}]
+
+A User object has the following attributes.
+
+- ID
+- Name
+- Template
+
++ Parameters
+    + webhook_id: "78a53aa2-f214-4c6a-9478-bfa8501de691" (required, string) - ID of the Webhook
+
+### View a Webhook detail [GET]
+
++ Response 200 (application/json)
+
+        {
+            "ID": "d40ef03b-cf65-4f5b-b054-3669359abbc9",
+            "Name": "bar",
+            "Template": "{{.bar}}",
+        }
+
+### Delete [DELETE]
+
++ Response 204
+
+# Data Structures
+
+## User (object)
+
++ Name (string) - Name of the user
++ Number (string) - Phone number without spaces
++ Always (boolean) - Always receive notification
+
+## Webhook (object)
+
++ Name (string) - Name of the webhook
++ Template (string) - Golang template template to transform an object into a string
