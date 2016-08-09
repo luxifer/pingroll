@@ -163,14 +163,17 @@ func WebhookHandler(c echo.Context) error {
 
 	receivers := make(map[string]*User)
 
-	// execute for user in current slot
+	// execute for user on duty
 	for _, ts := range slots {
 		receivers[ts.User.ID] = ts.User
 	}
 
-	// execute for user with always on
-	for _, u := range users {
-		receivers[u.ID] = u
+	// only send to always if nobody's on duty
+	if len(receivers) == 0 {
+		// execute for user with always on
+		for _, u := range users {
+			receivers[u.ID] = u
+		}
 	}
 
 	// loop over receivers to prevent recipient message duplication
