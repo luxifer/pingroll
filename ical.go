@@ -10,7 +10,7 @@ import (
 
 func ProcessIcal(icalURL string) {
 	FetchIcal(icalURL, time.Now())
-	ticker := time.NewTicker(time.Hour * 24)
+	ticker := time.NewTicker(time.Hour) // update ical every hour
 	go func() {
 		for t := range ticker.C {
 			FetchIcal(icalURL, t)
