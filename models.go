@@ -50,12 +50,12 @@ type TwilioClient struct {
 	FromNumber string
 }
 
-func NewEvent(u *User, w *Webhook, body string, r *http.Request) *Event {
+func NewEvent(u *User, w *Webhook, body string, r *http.Request, realIP string) *Event {
 	content, _ := ioutil.ReadAll(r.Body)
 
 	return &Event{
 		Request: Request{
-			IP:      r.RealIP(),
+			IP:      realIP,
 			Method:  r.Method,
 			URL:     r.URL.String(),
 			Header:  r.Header,
