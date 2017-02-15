@@ -181,6 +181,9 @@ func WebhookHandler(c echo.Context) error {
 
 	// loop over receivers to prevent recipient message duplication
 	for _, u := range receivers {
+		event := NewEvent(u, w, message, c.Request())
+		AddEvent(event)
+
 		log.WithFields(log.Fields{
 			"user":    u.Name,
 			"webhook": name,

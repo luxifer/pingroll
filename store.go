@@ -192,3 +192,15 @@ func GetAlwaysUser() ([]*User, error) {
 
 	return users, nil
 }
+
+func AddEvent(e *Event) error {
+	res, err := r.Table("event").Insert(e).RunWrite(rc)
+
+	if err != nil {
+		return err
+	}
+
+	e.ID = res.GeneratedKeys[0]
+
+	return nil
+}
