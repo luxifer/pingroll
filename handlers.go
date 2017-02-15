@@ -2,6 +2,7 @@ package main
 
 import (
 	"bytes"
+	"fmt"
 	"net/http"
 	"text/template"
 
@@ -148,6 +149,7 @@ func WebhookHandler(c echo.Context) error {
 	}
 
 	message := b.String()
+	message = fmt.Sprintf("%s:\n%s", name, message)
 
 	slots, err := GetCurrentTimeSlot()
 	if err != nil {
