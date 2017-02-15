@@ -5,7 +5,6 @@ import (
 
 	log "github.com/Sirupsen/logrus"
 	"github.com/labstack/echo"
-	"github.com/labstack/echo/engine/standard"
 	"github.com/labstack/echo/middleware"
 	r "gopkg.in/dancannon/gorethink.v2"
 )
@@ -18,6 +17,8 @@ var (
 
 func main() {
 	router := echo.New()
+	router.Use(middleware.Logger())
+	router.Use(middleware.Recover())
 	api := router.Group("/api")
 	api.Use(middleware.BasicAuth(AuthMiddleware))
 	api.GET("/users", UserListHandler)
@@ -88,5 +89,5 @@ func main() {
 
 	ProcessIcal(icalURL)
 
-	router.Run(standard.New(port))
+	router.Logger.Fatal(router.Start(port))
 }

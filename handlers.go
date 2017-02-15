@@ -121,12 +121,13 @@ func WebhookHandler(c echo.Context) error {
 	t := template.Must(template.New(name).Parse(w.Template))
 	var data map[string]interface{}
 
-	ct := c.Request().Header().Get(echo.HeaderContentType)
+	ct := c.Request().Header[echo.HeaderContentType]
 
-	switch ct {
+	switch ct[0] {
 	case echo.MIMEApplicationForm, echo.MIMEMultipartForm:
 		data = make(map[string]interface{})
-		for key, value := range c.FormParams() {
+		params, _ := c.FormParams()
+		for key, value := range params {
 			if len(value) == 1 {
 				data[key] = value[0]
 			} else {
