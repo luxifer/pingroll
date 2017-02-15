@@ -28,6 +28,7 @@ type TimeSlot struct {
 }
 
 type Request struct {
+	IP      string
 	Method  string
 	URL     string
 	Header  http.Header
@@ -54,6 +55,7 @@ func NewEvent(u *User, w *Webhook, body string, r *http.Request) *Event {
 
 	return &Event{
 		Request: Request{
+			IP:      r.RealIP(),
 			Method:  r.Method,
 			URL:     r.URL.String(),
 			Header:  r.Header,
