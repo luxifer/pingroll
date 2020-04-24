@@ -26,7 +26,7 @@ func FetchIcal(icalURL string, tick time.Time) error {
 		return err
 	}
 
-	calendar, err := ical.Parse(res.Body)
+	calendar, err := ical.Parse(res.Body, nil)
 
 	if err != nil {
 		log.Warn("Unable to parse iCal")
