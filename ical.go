@@ -5,7 +5,7 @@ import (
 	"time"
 
 	log "github.com/Sirupsen/logrus"
-	"github.com/Xotelia/ical"
+	"github.com/luxifer/ical"
 )
 
 func ProcessIcal(icalURL string) {
